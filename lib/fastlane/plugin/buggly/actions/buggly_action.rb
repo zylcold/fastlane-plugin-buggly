@@ -10,8 +10,7 @@ module Fastlane
         unless Helper.test?
           UI.user_error!("curl not installed") if `which curl`.length == 0
         end
-
-        params[:appVersion] = Actions.lane_context[SharedValues::VERSION_NUMBER] unless params[:appVersion]
+        
         filename = params[:dymZipFile].split("/").last
         dsymUzip =  "#{Pathname.new(params[:dymZipFile]).dirname}/#{filename.gsub!(".app.dSYM.zip", "")}"
         command = "unzip -o #{params[:dymZipFile]} -d '#{dsymUzip}'"
@@ -101,13 +100,3 @@ module Fastlane
   end
 end
 
-module CredentialsManager
-  class BugglyAppfileConfig < AppfileConfig
-    def buggly_app_id(*args, &block)
-      setter(:buggly_app_id, *args, &block)
-    end
-    def buggly_app_key(*args, &block)
-      setter(:buggly_app_key, *args, &block)
-    end
-  end
-end
