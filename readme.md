@@ -16,12 +16,31 @@ fastlane add_plugin buggly
 
 **Note to author:** Add a more detailed description about this plugin here. If your plugin contains multiple actions, make sure to mention them here.
 
-## Example
+Basic usage
+Just add the action upload_to_buggly to your lanes.
 
-Check out the [example `Fastfile`](fastlane/Fastfile) to see how to use this plugin. Try it by cloning the repo, running `fastlane install_plugins` and `bundle exec fastlane test`.
+sample code:
 
-**Note to author:** Please set up a sample project to make it easy for users to explore what your plugin does. Provide everything that is necessary to try out the plugin in this project (including a sample Xcode/Android project if necessary)
+    lane :beta do
+      increment_build_number 
+      gym
+      upload_to_buggly(appId:your_buggly_app_id,
+              appKey:your_buggly_app_key)
+    end
+You can found your buggly app id and app key when you register your app in buggly. For more infomation about buggly see: https://bugly.qq.com
 
+You can also set the buggly app id and app key in the Appfile.
+
+Appfile:
+
+    app_identifier "xxx.xxx.xxxx" # The bundle identifier of your app
+    apple_id "xxxx@xxxx.com" # Your Apple email address
+
+    buggly_app_id "your_buggly_app_id"
+    buggly_app_key "your_buggly_app_key"
+    More Reference can be shown by following command.
+
+fastlane action upload_to_buggly
 ## Run tests for this plugin
 
 To run both the tests, and code style validation, run
