@@ -24,7 +24,7 @@ sample code:
     lane :beta do
       increment_build_number 
       gym
-      upload_to_buggly(appId:your_buggly_app_id,
+      buggly(appId:your_buggly_app_id,
               appKey:your_buggly_app_key)
     end
 You can found your buggly app id and app key when you register your app in buggly. For more infomation about buggly see: https://bugly.qq.com
