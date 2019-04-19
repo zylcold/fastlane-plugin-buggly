@@ -43,21 +43,18 @@ module Fastlane
           FastlaneCore::ConfigItem.new(key: :appId,
                                        env_name: "BUGGLY_APP_ID", # The name of the environment variable
                                        description: "APP ID for Buggly", # a short description of this parameter
-                                       default_value:CredentialsManager::BugglyAppfileConfig.try_fetch_value(:buggly_app_id),
                                        verify_block: proc do |value|
                                           UI.user_error!("No APP ID for Buggly given, pass using `appId: 'appId'`, you can find it in your buggly app settings.") unless (value and not value.empty?)
                                        end),
           FastlaneCore::ConfigItem.new(key: :appKey,
                                        env_name: "BUGGLY_APP_KEY", # The name of the environment variable
                                        description: "APP Key for Buggly", # a short description of this parameter
-                                       default_value:CredentialsManager::BugglyAppfileConfig.try_fetch_value(:buggly_app_key),
                                        verify_block: proc do |value|
                                           UI.user_error!("No APP Key for Buggly given, pass using `appKey: 'appKey'`, you can find it in your buggly app settings.") unless (value and not value.empty?)
                                        end),
           FastlaneCore::ConfigItem.new(key: :bundleId,
                                        env_name: "BUGGLY_APP_BUNDLE_ID", # The name of the environment variable
                                        description: "The app's bundle indentifier", # a short description of this parameter
-                                       default_value:CredentialsManager::BugglyAppfileConfig.try_fetch_value(:app_identifier),
                                        verify_block: proc do |value|
                                           UI.user_error!("No APP bundle id for the app given, pass using `bundleId: 'bundleId'`, the same as app_identifier in APPConfigFile") unless (value and not value.empty?)
                                        end),
