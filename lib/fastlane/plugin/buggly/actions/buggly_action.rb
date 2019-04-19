@@ -16,7 +16,7 @@ module Fastlane
         command = "unzip -o #{params[:dymZipFile]} -d '#{dsymUzip}'"
         Fastlane::Actions.sh(command, log: false)
         dsymFileName = sh "ls #{dsymUzip} | grep -e 'app.dSYM'"
-        command = "java -jar ~/bin/buglySymboliOS.jar -u -id #{params[:appId]} -key #{params[:appKey]} -package #{params[:bundleId]} -version #{params[:appVersion]} -i #{dsymUzip}/#{dsymFileName}"
+        command = "java -jar ~/bin/buglySymboliOS.jar -u -id #{params[:appId]} -key #{params[:appKey]} -package #{params[:bundleId]} -version '#{params[:appVersion]}' -i #{dsymUzip}/#{dsymFileName}"
         result = Fastlane::Actions.sh(command, log: true)
         FileUtils.rm_r "#{dsymUzip}" if dsymUzip.length>0
         UI.success "Success to upload the dSYM for the app [#{params[:bundleId]} #{params[:appVersion]}]"
