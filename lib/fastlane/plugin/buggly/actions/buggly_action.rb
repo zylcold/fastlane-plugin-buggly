@@ -1,3 +1,5 @@
+require 'pathname'
+require 'fileutils'
 module Fastlane
   module Actions
     module SharedValues
@@ -9,16 +11,16 @@ module Fastlane
           UI.user_error!("curl not installed") if `which curl`.length == 0
         end
 
-        params[:appVersion] = Actions.lane_context[SharedValues::VERSION_NUMBER] + Actions.lane_context[SharedValues::BUILD_NUMBER] unless params[:appVersion]
-
+        params[:appVersion] = Actions.lane_context[SharedValues::VERSION_NUMBER] unless params[:appVersion]
         filename = params[:dymZipFile].split("/").last
-        url = "https://api.bugly.qq.com/openapi/file/upload/symbol?app_id=#{params[:appId]}&app_key=#{params[:appKey]}"
-        command = "curl -k '#{url}' --form 'api_version=1' --form 'app_id=#{params[:appId]}' --form 'app_key=#{params[:appKey]}' --form 'symbolType=2'  --form 'bundleId=#{params[:bundleId]}' --form 'productVersion=#{params[:appVersion]}' --form 'fileName=#{filename}' --form 'file=@#{params[:dymZipFile]}'"
-
-        result = sh command
-
-        UI.user_error!("Error: Failed to upload the zip archive file to Bugly.") unless result.include? "{\"reponseCode\":\"0\"}"
-        UI.success "Success to upload the dSYM for the app [#{params[:bundleId]} #{params[:appVersion]}]" if result.include? "{\"reponseCode\":\"0\"}"
+        dsymUzip =  "#{Pathname.new(params[:dymZipFile]).dirname}/#{filename.gsub!(".app.dSYM.zip", "")}"
+        command = "unzip -o #{params[:dymZipFile]} -d '#{dsymUzip}'"
+        Fastlane::Actions.sh(command, log: false)
+        dsymFileName = sh "ls #{dsymUzip} | grep -e 'app.dSYM'"
+        command = "java -jar ~/bin/buglySymboliOS.jar -u -id #{params[:appId]} -key #{params[:appKey]} -package #{params[:bundleId]} -version #{params[:appVersion]} -i #{dsymUzip}/#{dsymFileName}"
+        result = Fastlane::Actions.sh(command, log: true)
+        FileUtils.rm_r "#{dsymUzip}" if dsymUzip.length>0
+        UI.success "Success to upload the dSYM for the app [#{params[:bundleId]} #{params[:appVersion]}]"
 
       end
 
