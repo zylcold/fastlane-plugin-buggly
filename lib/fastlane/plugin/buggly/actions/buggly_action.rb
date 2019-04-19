@@ -19,7 +19,7 @@ module Fastlane
         command = "java -jar ~/bin/buglySymboliOS.jar -u -id #{params[:appId]} -key #{params[:appKey]} -package #{params[:bundleId]} -version '#{params[:appVersion]}' -i #{dsymUzip}/#{dsymFileName}"
         result = Fastlane::Actions.sh(command, log: true)
         FileUtils.rm_r "#{dsymUzip}" if dsymUzip.length>0
-        UI.success "Success to upload the dSYM for the app [#{params[:bundleId]} #{params[:appVersion]}]"
+        UI.success "Success to upload the dSYM for the app [#{params[:bundleId]}#{params[:appVersion]}]"
 
       end
 
@@ -34,7 +34,7 @@ module Fastlane
       def self.details
         # Optional:
         # this is your chance to provide a more detailed description of this action
-        "More information can be found on https://github.com/lvdaqian/fastlane-buggly.git"
+        "More information can be found on https://github.com/zylcold/fastlane-plugin-buggly.git"
       end
 
       def self.available_options
@@ -86,7 +86,7 @@ module Fastlane
 
       def self.authors
         # So no one will ever forget your contribution to fastlane :) You are awesome btw!
-        ["lvdaqian@gmail.com"]
+        ["zhuyunlong0315@gmail.com"]
       end
 
       def self.is_supported?(platform)
